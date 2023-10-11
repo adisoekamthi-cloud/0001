@@ -1,0 +1,88 @@
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+using namespace std;
+
+// Struct untuk menyimpan skor kemenangan dan kekalahan
+struct Skor {
+    int menang = 0;
+    int kalah = 0;
+};
+
+// Function untuk memproses pilihan komputer
+char generatePilihanKomputer() {
+    int acak = rand() % 3;
+    if (acak == 0) {
+        return 'R';  // Rock
+    } else if (acak == 1) {
+        return 'P';  // Paper
+    } else {
+        return 'S'; // Scissor
+    }
+}
+
+// Function untuk menentukan pemenang dan mengupdate skor
+void tentukanPemenang(char pilihanUser, char pilihanKomputer, Skor& skorUser, Skor& skorKomputer) {
+    if (pilihanUser == pilihanKomputer) {
+        cout << "Hasil: Seri!" << endl;
+    } else if ((pilihanUser == 'R' && pilihanKomputer == 'S') ||
+               (pilihanUser == 'P' && pilihanKomputer == 'R') ||
+               (pilihanUser == 'S' && pilihanKomputer == 'P')) {
+       cout << "Anda Menang!" << endl;
+        skorUser.menang++;
+        skorKomputer.kalah++;
+    } else {
+        cout << "Komputer Menang!" << endl;
+        skorUser.kalah++;
+        skorKomputer.menang++;
+    }
+}
+
+int main() {
+    srand(static_cast<unsigned int>(time(nullptr)));
+
+    Skor skorUser;
+    Skor skorKomputer;
+
+    char pilihanUser;
+    char pilihanKomputer;
+
+    cout << "Selamat datang di permainan Rock,Paper,Scissor!" << endl;
+
+    bool mainLagi = true;
+
+    while (mainLagi) {
+        while (true) {
+            cout << "Pilih (R)ock, (P)aper, atau (S)cissor: ";
+            cin >> pilihanUser;
+
+
+            if (pilihanUser != 'R' && pilihanUser != 'r' && pilihanUser != 'P' && pilihanUser != 'p' && pilihanUser != 'S' && pilihanUser != 's') {
+                cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
+                continue;
+            }
+
+            pilihanKomputer = generatePilihanKomputer();
+
+            cout << "Anda memilih " << pilihanUser << ", komputer memilih " << pilihanKomputer << endl<<endl;
+
+            tentukanPemenang(pilihanUser, pilihanKomputer, skorUser, skorKomputer);
+
+            cout << "Skor Anda      : " << skorUser.menang << " Menang, " << skorUser.kalah << " Kekalahan" << endl;
+            cout << "Skor Komputer  : " << skorKomputer.menang << " Menang, " << skorKomputer.kalah << " Kekalahan" << endl<<endl;
+
+            cout << "Apakah Anda ingin bermain lagi? (Y/N): ";
+            char jawaban;
+            cin >> jawaban;
+
+            if (jawaban == 'N' || jawaban == 'n') {
+                mainLagi = false;
+                break;
+            }
+        }
+    }
+
+    cout << "Terima kasih telah bermain!" << endl;
+
+    return 0;
+}
